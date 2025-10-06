@@ -27,9 +27,9 @@ class KMAppCore:
             "lonlna": "londrina_lna.gpx",
             "lonlna2": "londrina_lna2.gpx",
             "lna": "lna.gpx",
-            "lna_assis": "lna_assis.gpx",
+            "lna_assis": "londrina_assis.gpx",
             "maringa_sarandi": "maringa_sarandi.gpx",
-            "assis_c2_londrina_norte": "assis_c2_londrina_norte.gpx",
+            "assis_c2_londrina_norte": "lna_assis.gpx",
             "ivp_lon": "ivaipora_londrina.gpx"
         }
         self.paths = None  # Adicione um atributo paths
