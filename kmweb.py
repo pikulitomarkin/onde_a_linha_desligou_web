@@ -391,7 +391,7 @@ def londrina():
         ("Linha Sarandi - Londrina", "lon_sdi", "LON-SDI", "SDI-LON", "KM LON SDI.xlsx"),
         ("Linha Maringa - Sarandi", "lon_mga", "MGA-SDI", "SDI-MGA", "KM MGA SDI.xlsx"),
         ("Linha Assis C2 - Londrina Copel", "assis_c2_londrina_norte", "LNA-ASS", "ASS-LNA", "KM LNA ASS2.xlsx"),
-        ("Linha Assis C1 - Londrina Copel", "lna_assis", "KM - LNA - ASS", "KM - ASS - LNA", "KM LNA ASS.xlsx"),
+        ("Linha Assis C1 - Londrina Copel", "lna_assis", "KM - ASS - LNA", "KM - LNA - ASS", "KM LNA ASS.xlsx"),
         ("Linha Ivaiporã - Londrina", "ivp_lon", "KMIVP", "KMLON", "KM IVP LON.xlsx")
     ]
     return render_template("menu_londrina.html", botoes_londrina=botoes_londrina)
