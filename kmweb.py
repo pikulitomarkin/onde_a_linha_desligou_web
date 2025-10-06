@@ -254,10 +254,11 @@ class KMAppCore:
             for waypoint in gpx.waypoints:
                 nome_wp = str(waypoint.name).strip()
                 
-                # Para linha lna_assis, procura o formato "7350TOxxx" ou "7330TOxxx"
-                if gpx_file and "lna_assis" in str(gpx_file):
-                    if nome_wp == f"7350TO{numero_torre}" or nome_wp == f"7330TO{numero_torre}":
-                        print(f"Torre encontrada: {waypoint.name}")
+                # Para linha lna_assis (usando assisc1.gpx), prioriza busca direta pelo número
+                if gpx_file and ("lna_assis" in str(gpx_file) or "assisc1" in str(gpx_file)):
+                    # Para lna_assis, usa apenas o número direto (ex: "177"), ignorando prefixos
+                    if nome_wp == numero_torre:
+                        print(f"Torre encontrada direta: {waypoint.name}")
                         return (waypoint.latitude, waypoint.longitude)
                 else:
                     # Para outras linhas, comparação direta
@@ -266,7 +267,8 @@ class KMAppCore:
                         return (waypoint.latitude, waypoint.longitude)
 
         print("Nenhuma torre correspondente encontrada no GPX.")
-        print(f"Formatos tentados para linha lna_assis: '7350TO{numero_torre}', '7330TO{numero_torre}'")
+        if gpx_file and ("lna_assis" in str(gpx_file) or "assisc1" in str(gpx_file)):
+            print(f"Para linha lna_assis, procurou apenas pelo número direto: '{numero_torre}'")
         return None
 
     def ajustar_codigo_torre(self, codigo_torre, df_key):
