@@ -133,7 +133,7 @@ class KMAppCore:
                 raise FileNotFoundError(f"Arquivo GPX '{gpx_file}' não encontrado no diretório 'resources'.")
 
             # Determina se o prefixo deve ser incluído na comparação
-            incluir_prefixo = df_key in ["cmo_sos", "cmo_sos c2", "cmo_ssa", "cmo_ssac2", "lna", "apucarana", ]
+            incluir_prefixo = df_key in ["cmo_sos", "cmo_sos c2", "cmo_ssa", "cmo_ssac2", "lna", "apucarana", "lna_assis", "assis_c2_londrina_norte"]
 
             # Ajusta o código da torre para o formato esperado no GPX
             codigo_torre_ajustado = self.ajustar_codigo_torre(codigo_torre, df_key)
@@ -183,8 +183,8 @@ class KMAppCore:
         if codigo_torre.isdigit():
             numero_torre = codigo_torre.strip()
         else:
-            numero_torre = str(self.extrair_numero_torre(codigo_torre, incluir_prefixo=False)).strip()
-        print(f"Número da torre extraído da planilha (apenas número): '{numero_torre}'")
+            numero_torre = str(self.extrair_numero_torre(codigo_torre, incluir_prefixo=incluir_prefixo)).strip()
+        print(f"Número da torre extraído da planilha: '{numero_torre}' (incluir_prefixo={incluir_prefixo})")
 
         with open(gpx_path, "r", encoding="utf-8") as gpx_file:
             gpx = gpxpy.parse(gpx_file)
@@ -244,12 +244,17 @@ class KMAppCore:
         if "TO" in codigo_torre:
             partes = codigo_torre.split("TO")
             if len(partes) > 1:
-                prefixo = partes[0] if incluir_prefixo else ""
-                numero = ''.join(filter(str.isdigit, partes[1]))  # Mantém apenas os dígitos
-                if not numero:
-                    return None
-                numero = str(int(numero))  # Remove zeros à esquerda
-                return f"{prefixo}{numero}"
+                if incluir_prefixo:
+                    # Para linhas que precisam do código completo (como Assis C1 e C2)
+                    return codigo_torre  # Retorna o código completo como "7350TO001"
+                else:
+                    # Lógica original para outras linhas
+                    prefixo = partes[0] if incluir_prefixo else ""
+                    numero = ''.join(filter(str.isdigit, partes[1]))  # Mantém apenas os dígitos
+                    if not numero:
+                        return None
+                    numero = str(int(numero))  # Remove zeros à esquerda
+                    return f"{prefixo}{numero}"
 
         return None
 
@@ -266,10 +271,9 @@ def londrina():
         ("Linha Londrina - Londrina Norte C1", "lonlna", "KM - LON - LNA", "KM - LNA - LON", "KM LON LNA.xlsx"),
         ("Linha Londrina - Londrina Norte C2", "lonlna2", "KM LON-ASS", "KM ASS-LON", "KM LON LNA2.xlsx"),
         ("Linha Londrina Norte - Apucarana", "lna", "KM - LON - LNA", "KM - LNA - LON", "KM LON LNA.xlsx"),
-        ("Linha Londrina - Sarandi", "lna_assis", "KM - LNA - ASS", "KM - ASS - LNA", "KM LNA ASS.xlsx"),
+        ("Linha Assis C1 - Londrina Norte", "lna_assis", "KM - LNA - ASS", "KM - ASS - LNA", "KM LNA ASS.xlsx"),
         ("Linha Maringa - Sarandi", "maringa_sarandi", "KMMGA", "KMSDI", "KM MGA SDI.xlsx"),
         ("Linha Assis C2 - Londrina Norte", "assis_c2_londrina_norte", "KM LNA", "KM ASS", "KM ASSIS LNA2.xlsx"),
-        ("Linha Assis C1 - Londrina Norte", "lna_assis", "KM - LNA - ASS", "KM - ASS - LNA", "KM LNA ASS.xlsx"),
         ("Linha Ivaiporã - Londrina", "ivp_lon", "KMIVP", "KMLON", "KM IVP LON.xlsx")
     ]
     return render_template("menu_londrina.html", botoes_londrina=botoes_londrina)
