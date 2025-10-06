@@ -32,7 +32,7 @@ class KMAppCore:
             "lon_sdi": "lon_sdi.gpx",
             "lon_mga": "lon_mga.gpx",
             "assis_c2_londrina_norte": "assis2.gpx",
-            "lna_assis": "lna_assis.gpx",
+            "lna_assis": "londrina_assis.gpx",
             "ivp_lon": "ivaipora_londrina.gpx",
             "apucarana": "apucarana.gpx",
             "cvo_cvo": "cvo_cvo.gpx",
@@ -390,7 +390,7 @@ def londrina():
         ("Linha Londrina Sul - Apucarana", "apucarana", "LNS", "APA", "KM LON APA.xlsx"),
         ("Linha Sarandi - Londrina", "lon_sdi", "LON-SDI", "SDI-LON", "KM LON SDI.xlsx"),
         ("Linha Maringa - Sarandi", "lon_mga", "MGA-SDI", "SDI-MGA", "KM MGA SDI.xlsx"),
-        ("Linha Assis C2 - Londrina Copel", "assis_c2_londrina_norte", "LNA-ASS", "ASS-LNA", "KM LNA ASS2.xlsx"),
+        ("Linha Assis C2 - Londrina Copel", "assis_c2_londrina_norte", "ASS-LNA", "LNA-ASS", "KM LNA ASS2.xlsx"),
         ("Linha Assis C1 - Londrina Copel", "lna_assis", "KM - ASS - LNA", "KM - LNA - ASS", "KM LNA ASS.xlsx"),
         ("Linha Ivaiporã - Londrina", "ivp_lon", "KMIVP", "KMLON", "KM IVP LON.xlsx")
     ]
