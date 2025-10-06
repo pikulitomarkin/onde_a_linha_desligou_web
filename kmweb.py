@@ -32,7 +32,7 @@ class KMAppCore:
             "lon_sdi": "lon_sdi.gpx",
             "lon_mga": "lon_mga.gpx",
             "assis_c2_londrina_norte": "assis2.gpx",
-            "lna_assis": "londrina_assis.gpx",
+            "lna_assis": "assisc1.gpx",
             "ivp_lon": "ivaipora_londrina.gpx",
             "apucarana": "apucarana.gpx",
             "cvo_cvo": "cvo_cvo.gpx",
