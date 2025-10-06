@@ -237,31 +237,44 @@ class KMAppCore:
         if not gpx_path.exists():
             raise FileNotFoundError(f"Arquivo GPX '{gpx_file}' não encontrado no diretório 'resources'.")
 
-        # Se já for só o número, use direto
-        if codigo_torre.isdigit():
-            numero_torre = codigo_torre.strip()
-        else:
-            numero_torre = str(self.extrair_numero_torre(codigo_torre, incluir_prefixo=False)).strip()
-        print(f"Número da torre extraído da planilha (apenas número): '{numero_torre}'")
+        # Para linha lna_assis, já vem no formato correto (ex: "075")
+        numero_torre = codigo_torre.strip()
+        print(f"Procurando torre: '{numero_torre}' no arquivo {gpx_file}")
 
-        with open(gpx_path, "r", encoding="utf-8") as gpx_file:
-            gpx = gpxpy.parse(gpx_file)
-            print("Waypoints disponíveis no GPX:")
+        with open(gpx_path, "r", encoding="utf-8") as gpx_file_obj:
+            gpx = gpxpy.parse(gpx_file_obj)
+            print("Waypoints disponíveis no GPX (primeiros 20):")
+            
+            # Lista alguns waypoints para debug
+            for i, waypoint in enumerate(gpx.waypoints[:20]):
+                nome_wp = str(waypoint.name).strip()
+                print(f"  {i+1:2d}. '{nome_wp}'")
+            
+            # Procura correspondência exata
             for waypoint in gpx.waypoints:
                 nome_wp = str(waypoint.name).strip()
-                print(f"Comparando '{nome_wp}' com '{numero_torre}'")
-                if nome_wp == numero_torre:
-                    print(f"Torre encontrada: {waypoint.name}")
-                    return (waypoint.latitude, waypoint.longitude)
+                
+                # Para linha lna_assis, procura o formato "7350TOxxx" ou "7330TOxxx"
+                if gpx_file and "lna_assis" in str(gpx_file):
+                    if nome_wp == f"7350TO{numero_torre}" or nome_wp == f"7330TO{numero_torre}":
+                        print(f"Torre encontrada: {waypoint.name}")
+                        return (waypoint.latitude, waypoint.longitude)
+                else:
+                    # Para outras linhas, comparação direta
+                    if nome_wp == numero_torre:
+                        print(f"Torre encontrada: {waypoint.name}")
+                        return (waypoint.latitude, waypoint.longitude)
 
         print("Nenhuma torre correspondente encontrada no GPX.")
+        print(f"Formatos tentados para linha lna_assis: '7350TO{numero_torre}', '7330TO{numero_torre}'")
         return None
 
     def ajustar_codigo_torre(self, codigo_torre, df_key):
         """
         Ajusta o código da torre da planilha para o formato esperado no GPX.
         Exemplo:
-        7350TO001 -> 001 (extrai apenas o número da torre)
+        7350TO075 -> 075 (mantém zeros à esquerda para lna_assis)
+        7350TO001 -> 1 (para outras linhas)
         V0006R -> 6 (extrai apenas o número principal, ignorando prefixos e sufixos)
         """
         if not codigo_torre:
@@ -274,10 +287,15 @@ class KMAppCore:
         if "TO" in codigo_torre:
             partes = codigo_torre.split("TO")
             if len(partes) > 1:
-                numero = ''.join(filter(str.isdigit, partes[1]))  # Mantém apenas os dígitos
-                if not numero:
+                numero_str = ''.join(filter(str.isdigit, partes[1]))  # Mantém apenas os dígitos
+                if not numero_str:
                     raise ValueError("Número da torre não encontrado após o prefixo 'TO'.")
-                return str(int(numero))  # Remove zeros à esquerda e retorna o número
+                
+                # Para linha lna_assis, mantém zeros à esquerda (3 dígitos)
+                if df_key == "lna_assis":
+                    return numero_str.zfill(3)  # Força 3 dígitos com zeros à esquerda
+                else:
+                    return str(int(numero_str))  # Remove zeros à esquerda para outras linhas
 
         # Caso contenha apenas letras e números, extrai o número principal
         numero = ''.join(filter(str.isdigit, codigo_torre))  # Mantém apenas os dígitos
