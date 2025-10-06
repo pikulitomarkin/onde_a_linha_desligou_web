@@ -71,7 +71,13 @@
     </div>
     
     <div style="text-align:center;margin-top:32px;">
-        <a href="{{ url_for('index') }}" class="voltar-link">← Voltar ao Menu Principal</a>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:500px;margin:0 auto;">
+            <a href="javascript:history.back()" class="voltar-link" 
+               style="background:#6c757d;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;transition:background 0.2s;">
+                ← Voltar ao Menu de Busca
+            </a>
+            <a href="{{ url_for('index') }}" class="voltar-link">← Voltar ao Menu Principal</a>
+        </div>
     </div>
 
     <style>
@@ -95,6 +101,10 @@
             background-color: #138496 !important;
         }
         
+        a[href="javascript:history.back()"]:hover {
+            background-color: #5a6268 !important;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 16px 8px;
@@ -115,6 +125,11 @@
             button, a[href*="maps"] {
                 font-size: 1rem !important;
                 padding: 12px !important;
+            }
+            
+            .voltar-link, a[href="javascript:history.back()"] {
+                font-size: 0.9rem !important;
+                padding: 10px 16px !important;
             }
         }
     </style>
