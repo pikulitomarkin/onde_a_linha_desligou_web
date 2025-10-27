@@ -1,6 +1,0 @@
-@OndeALinhaDesligouWeb_HostAddress = http://localhost:5001
-
-GET {{OndeALinhaDesligouWeb_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

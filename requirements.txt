@@ -1,4 +1,0 @@
-Flask
-gpxpy
-folium
-openpyxl
