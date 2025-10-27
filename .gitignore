@@ -1,1 +1,29 @@
 .config/
+
+# .NET
+bin/
+obj/
+**/bin/
+**/obj/
+.vs/
+*.db
+*.user
+*.suo
+
+# Logs
+logs/
+*.log
+
+# Node
+node_modules/
+frontend/onde-a-linha-desligou-web/node_modules/
+
+# npm
+package-lock.json
+
+# IDE
+.vscode/
+
+# Static resources that may be added locally (not committed)
+static/resources/
+

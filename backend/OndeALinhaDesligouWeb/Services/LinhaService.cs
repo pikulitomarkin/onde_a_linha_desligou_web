@@ -6,60 +6,22 @@ using System.Text.RegularExpressions;
 
 namespace OndeALinhaDesligouWeb.Services;
 
+using Microsoft.Extensions.Options;
+using OndeALinhaDesligouWeb.Options;
+
 public class LinhaService
 {
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private static readonly List<Linha> _linhas = new()
-    {
-        // Grupo Londrina
-        new Linha { Nome = "Linha Londrina - Londrina Sul", Chave = "lonlns", ColunaA = "KMLON", ColunaB = "KMAPA", ArquivoExcel = "KM LON LNS.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Londrina - Londrina Copel C1", Chave = "lonlna", ColunaA = "KM - LON - LNA", ColunaB = "KM - LNA - LON", ArquivoExcel = "KM LON LNA.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Londrina - Londrina Copel C2", Chave = "lonlna2", ColunaA = "LON-LNA", ColunaB = "LNA-LON", ArquivoExcel = "KM LON LNA2.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Londrina Sul - Apucarana", Chave = "apucarana", ColunaA = "LNS", ColunaB = "APA", ArquivoExcel = "KM LON APA.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Sarandi - Londrina", Chave = "lon_sdi", ColunaA = "LON-SDI", ColunaB = "SDI-LON", ArquivoExcel = "KM LON SDI.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Maringa - Sarandi", Chave = "lon_mga", ColunaA = "MGA-SDI", ColunaB = "SDI-MGA", ArquivoExcel = "KM MGA SDI.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Assis C2 - Londrina Copel", Chave = "assis_c2_londrina_norte", ColunaA = "ASS-LNA", ColunaB = "LNA-ASS", ArquivoExcel = "KM LNA ASS2.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Assis C1 - Londrina Copel", Chave = "lna_assis", ColunaA = "KM - ASS - LNA", ColunaB = "KM - LNA - ASS", ArquivoExcel = "KM LNA ASS.xlsx", Grupo = "Londrina" },
-        new Linha { Nome = "Linha Ivaiporã - Londrina", Chave = "ivp_lon", ColunaA = "KMIVP", ColunaB = "KMLON", ArquivoExcel = "KM IVP LON.xlsx", Grupo = "Londrina" },
+    private readonly List<Linha> _linhas;
+    private readonly Dictionary<string, string> _linhasGpx;
+    private readonly string _resourcesPath;
 
-        // Grupo Campo Mourão
-        new Linha { Nome = "Linha Campo Mourão - Apucarana", Chave = "cmo_apa", ColunaA = "KMCMO", ColunaB = "KMAPA", ArquivoExcel = "KM CMO APA.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Campo Mourão - Maringá", Chave = "cmo_mga", ColunaA = "KMCMO", ColunaB = "KMMGA", ArquivoExcel = "KM CMO MGA.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Salto Osório - Campo Mourão", Chave = "cmo_sos", ColunaA = "KMSOS", ColunaB = "KMCMO", ArquivoExcel = "KM CMO SOS.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Salto Osório C2 - Campo Mourão", Chave = "cmo_sos c2", ColunaA = "KMSOS", ColunaB = "KMCMO", ArquivoExcel = "KM CMO SOSC2.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Salto Santiago - Campo Mourão", Chave = "cmo_ssa", ColunaA = "KMSSA", ColunaB = "KMIVP", ArquivoExcel = "KM CMO SSA.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Salto Santiago C2 - Campo Mourão", Chave = "cmo_ssac2", ColunaA = "KMSSA", ColunaB = "KMIVP", ArquivoExcel = "KM CMO SSAC2.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Ivaiporã - Cascavel", Chave = "ivp_cvo", ColunaA = "KMIVP", ColunaB = "KMCVO", ArquivoExcel = "KM IVP CVO.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Cascavel - Cascavel Oeste", Chave = "cvo_cvo", ColunaA = "CEL-CVO", ColunaB = "CVO-CEL", ArquivoExcel = "KM CEL CVO.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Cascavel - Guaira", Chave = "cvo_guaira", ColunaA = "CVO-GUI", ColunaB = "GUI-CVO", ArquivoExcel = "KM CVO GUI.xlsx", Grupo = "Campo Mourão" },
-        new Linha { Nome = "Linha Areia - Ivaiporã", Chave = "are_ivp", ColunaA = "KMARE", ColunaB = "KMIVP", ArquivoExcel = "KM ARE IVP.xlsx", Grupo = "Campo Mourão" },
-    };
-     private static readonly Dictionary<string, string> _linhasGpx = new()
-    {
-        {"cmo_apa", "cmo_apucarana.gpx"},
-        {"cmo_mga", "cmo_maringa.gpx"},
-        {"cmo_sos", "cmo_salto_osorio.gpx"},
-        {"cmo_sos c2", "cmo_salto_osorio_c2.gpx"},
-        {"cmo_ssa", "cmo_salto_santiago.gpx"},
-        {"cmo_ssac2", "cmo_salto_santiago_c2.gpx"},
-        {"ivp_cvo", "ivp_cascavel.gpx"},
-        {"are_ivp", "areia_ivaipora.gpx"},
-        {"lonlns", "londrina_lns.gpx"},
-        {"lonlna", "londrina_lna.gpx"},
-        {"lonlna2", "londrina_lna2.gpx"},
-        {"lon_sdi", "lon_sdi.gpx"},
-        {"lon_mga", "lon_mga.gpx"},
-        {"assis_c2_londrina_norte", "assis2.gpx"},
-        {"lna_assis", "assisc1.gpx"},
-        {"ivp_lon", "ivaipora_londrina.gpx"},
-        {"apucarana", "apucarana.gpx"},
-        {"cvo_cvo", "cvo_cvo.gpx"},
-        {"cvo_guaira", "cvo_guaira.gpx"},
-    };
-
-    public LinhaService(IWebHostEnvironment hostingEnvironment)
+    public LinhaService(IWebHostEnvironment hostingEnvironment, LinhasOptions options)
     {
         _hostingEnvironment = hostingEnvironment;
+        _linhas = options.Linhas ?? new List<Linha>();
+        _linhasGpx = options.LinhasGpx ?? new Dictionary<string, string>();
+        _resourcesPath = string.IsNullOrWhiteSpace(options.ResourcesPath) ? "static/resources" : options.ResourcesPath;
         OfficeOpenXml.ExcelPackage.License.SetNonCommercialOrganization("onde-a-linha-desligou-web");
     }
 
@@ -81,7 +43,7 @@ public class LinhaService
             throw new Exception($"Linha com chave '{chave}' não encontrada.");
         }
 
-        var resourcesPath = Path.Combine(_hostingEnvironment.ContentRootPath, "..", "..", "static", "resources");
+    var resourcesPath = Path.Combine(_hostingEnvironment.ContentRootPath, "..", "..", _resourcesPath);
         var excelPath = Path.Combine(resourcesPath, linha.ArquivoExcel);
 
         if (!File.Exists(excelPath))

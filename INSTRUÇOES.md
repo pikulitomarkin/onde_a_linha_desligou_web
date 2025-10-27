@@ -44,3 +44,60 @@ Aqui está uma lista de tarefas que podem ser feitas para melhorar e concluir o 
 
 7.  **CI/CD (Integração Contínua/Implantação Contínua)**:
     -   Configurar um pipeline de CI/CD (por exemplo, usando GitHub Actions) para construir, testar e implantar a aplicação automaticamente.
+
+## Estado atual (detalhado) e o que falta
+
+- Recursos ausentes: para que a busca por KM funcione end-to-end é necessário adicionar os arquivos de dados em `static/resources/` (arquivos Excel e GPX). Exemplo de nomes esperados pela configuração atual:
+    - `KM LON LNS.xlsx` (planilha Excel com KM e códigos de torre para a linha `lonlns`)
+    - `KM LON LNS.gpx` (arquivo GPX com coordenadas das torres para a linha `lonlns`)
+    - Para outras linhas, use os nomes conforme configurado em `appsettings.json` sob `LinhasConfiguration`.
+
+- Testes:
+    - Foi adicionado um projeto de testes de integração (`backend/tests/OndeALinhaDesligouWeb.Tests`) com um teste que valida `GET /api/linhas` (passou localmente). Ainda faltam testes unitários para a lógica de parsing/seleção de torres.
+
+- Refatoração recomendada (próximos passos de desenvolvimento):
+    - Extrair leitura de Excel para um serviço `ExcelReader` e leitura de GPX para um `GpxReader`.
+    - Adicionar testes unitários que cubram as funções de parsing (`AjustarCodigoTorre`, `ExtrairApenasNumero`) e as buscas por KM.
+
+- Git/CI:
+    - Houve várias modificações locais (adição do middleware de exceção, Serilog, `LinhasOptions`, testes e mudanças em `Program.cs`). Estas alterações serão commitadas e empurradas para `origin/main` quando o push for possível a partir deste ambiente (pode requerer autenticação/configuração de remote se não estiver configurada).
+
+## Como rodar localmente (rápido)
+
+Pré-requisitos:
+
+- .NET SDK 8.0 (o projeto foi ajustado para `net8.0` no ambiente de desenvolvimento atual).
+- Node.js (recomendado v18+) e npm
+
+Backend (API):
+
+1. Vá para `backend/OndeALinhaDesligouWeb`
+2. Restaurar e rodar:
+
+```bash
+dotnet restore
+dotnet run --urls "http://localhost:5001"
+```
+
+Frontend (Angular):
+
+1. Vá para `frontend/onde-a-linha-desligou-web`
+2. Instale dependências e execute:
+
+```bash
+npm install
+npm start
+```
+
+Testes:
+
+```bash
+cd backend/tests/OndeALinhaDesligouWeb.Tests
+dotnet test
+```
+
+## Observações finais
+
+- Se a busca por KM retornar erro 404, verifique os logs do backend (serilog) e confirme se os arquivos esperados existem em `static/resources/`.
+- Se houver problemas no push para o repositório remoto, verifique as credenciais git/SSH ou use o GitHub CLI para autenticar (`gh auth login`).
+

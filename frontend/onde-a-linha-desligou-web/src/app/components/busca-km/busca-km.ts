@@ -40,8 +40,16 @@ export class BuscaKmComponent implements OnInit {
       const numValorA = valorA ? parseFloat(valorA.replace(',', '.')) : undefined;
       const numValorB = valorB ? parseFloat(valorB.replace(',', '.')) : undefined;
       this.linhaService.buscarTorre(this.linha.chave, numValorA, numValorB)
-        .subscribe(torre => {
-          this.router.navigate(['/detalhes', { ...torre }]);
+        .subscribe({
+          next: torre => {
+            this.router.navigate(['/detalhes', { ...torre }]);
+          },
+          error: err => {
+            // Mostrar mensagem de erro ao usuário para casos como arquivo não encontrado
+            const msg = err?.error || err?.message || 'Erro ao buscar torre. Verifique os logs do servidor.';
+            // Usamos alert por simplicidade; isso pode ser substituído por um componente de toast
+            alert(msg);
+          }
         });
     }
   }
