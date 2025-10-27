@@ -1,0 +1,40 @@
+<div class="linhas-wrapper">
+  <div class="linhas-container">
+    <div class="linhas-header">
+      <h1 class="linhas-title">Linhas - {{ grupo }}</h1>
+      <p class="linhas-subtitle">Selecione uma linha para monitorar</p>
+    </div>
+
+    <div class="linhas-grid" *ngIf="linhas$ | async as linhas">
+      <button
+        *ngFor="let linha of linhas"
+        class="linha-card"
+        (click)="navigateToBusca(linha)"
+        [attr.aria-label]="'Linha ' + linha.nome">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16"/>
+            <path d="M8 22l4-10 4 10"/>
+            <path d="M12 12V2"/>
+            <path d="M8 12h8"/>
+            <path d="M10 7h4"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h2>{{ linha.nome }}</h2>
+        </div>
+        <div class="card-arrow">→</div>
+      </button>
+    </div>
+
+    <div class="back-section">
+      <a routerLink="/" class="back-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5"></path>
+          <path d="M12 19l-7-7 7-7"></path>
+        </svg>
+        <span>Voltar</span>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="dashboard-wrapper">
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Onde a Linha Desligou</h1>
+      <p class="dashboard-subtitle">Acompanhe o status das linhas em tempo real</p>
+    </div>
+
+    <div class="menu-grid">
+      <button 
+        class="menu-card menu-card-londrina" 
+        (click)="navigateTo('Londrina')"
+        aria-label="Linhas Londrina">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h2>Londrina</h2>
+          <p>Monitorar linhas</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </button>
+
+      <button 
+        class="menu-card menu-card-campo" 
+        (click)="navigateTo('Campo Mourão')"
+        aria-label="Linhas Campo Mourão">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h2>Campo Mourão</h2>
+          <p>Monitorar linhas</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </button>
+
+      <button 
+        class="menu-card menu-card-sobre" 
+        (click)="navigateTo('sobre')"
+        aria-label="Sobre">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h2>Sobre</h2>
+          <p>Informações</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </button>
+    </div>
+  </div>
+</div>

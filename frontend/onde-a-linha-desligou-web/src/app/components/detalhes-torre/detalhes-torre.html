@@ -1,0 +1,29 @@
+<div class="dashboard-wrapper">
+  <div class="dashboard-container" *ngIf="torre">
+    <div class="details-container">
+      <h1>Detalhes da Torre</h1>
+
+      <div class="info-card">
+        <h2>Informações da Torre</h2>
+        <p><strong>Torre:</strong> <span>{{ torre.numeroParaExibicao }}</span></p>
+        <p><strong>Cidade:</strong> {{ torre.cidade }}</p>
+        <p><strong>Setor:</strong> {{ torre.setor }}</p>
+      </div>
+
+      <div class="info-card coords" *ngIf="torre.latitude && torre.longitude">
+        <h3>📍 Coordenadas</h3>
+        <p><strong>Latitude:</strong> {{ torre.latitude | number:'1.6-6' }}</p>
+        <p><strong>Longitude:</strong> {{ torre.longitude | number:'1.6-6' }}</p>
+      </div>
+
+      <div class="actions">
+        <button (click)="verNoMapa()">🗺️ Visualizar no Mapa</button>
+      </div>
+
+      <div class="footer-links">
+        <a (click)="goBack()">← Voltar</a>
+        <a routerLink="/">← Voltar ao Menu Principal</a>
+      </div>
+    </div>
+  </div>
+</div>

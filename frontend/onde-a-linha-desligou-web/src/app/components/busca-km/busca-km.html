@@ -1,0 +1,20 @@
+<div class="dashboard-wrapper">
+  <div class="dashboard-container" *ngIf="linha">
+    <div class="form-container">
+      <h1 class="titulo-km">DIGITE O KM PARTINDO DA SUBESTAÇÃO DE {{ linha.nome.split(' - ')[0].trim().toUpperCase().replace('LINHA ', '') }}</h1>
+      <form [formGroup]="form" (ngSubmit)="buscar()" class="form-km">
+        <label for="valorA">KM:</label>
+        <input type="text" id="valorA" formControlName="valorA" autocomplete="off">
+
+        <h1 class="titulo-km">DIGITE O KM PARTINDO DA SUBESTAÇÃO DE {{ linha.nome.split(' - ')[1].trim().toUpperCase().replace('LINHA ', '') }}</h1>
+        <label for="valorB">KM:</label>
+        <input type="text" id="valorB" formControlName="valorB" autocomplete="off">
+
+        <button type="submit">BUSCAR</button>
+      </form>
+      <div style="text-align:center;margin-top:32px;">
+        <a class="voltar-link" [routerLink]="['/linhas', linha.grupo]">VOLTAR</a>
+      </div>
+    </div>
+  </div>
+</div>
